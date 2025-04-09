@@ -1,0 +1,60 @@
+{
+  "name": "css-scope-loader",
+  "version": "0.0.1",
+  "description": "A webpack loader that adds scope to css in react projects",
+  "keywords": [
+    "webpack",
+    "loader",
+    "css",
+    "less",
+    "react",
+    "tsx",
+    "jsx"
+  ],
+  "author": "Percy Kuang",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "rslib build",
+    "dev": "rslib build --watch"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/generator": "^7.23.6",
+    "@babel/parser": "^7.23.6",
+    "@babel/traverse": "^7.23.7",
+    "@babel/types": "^7.23.6",
+    "@rslib/core": "^0.6.2",
+    "@types/babel__generator": "^7.6.8",
+    "@types/babel__traverse": "^7.20.5",
+    "@types/css": "^0.0.37",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^22.8.1",
+    "@types/webpack": "^5.28.5",
+    "@vue/compiler-sfc": "^3.4.3",
+    "css": "^3.0.0",
+    "jest": "^29.7.0",
+    "node-html-parser": "^6.1.12",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.89.0"
+  },
+  "peerDependencies": {
+    "webpack": "^5.0.0"
+  }
+}

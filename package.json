@@ -1,6 +1,6 @@
 {
   "name": "css-scope-loader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A webpack loader that adds scope to css in react projects",
   "keywords": [
     "webpack",

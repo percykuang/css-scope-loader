@@ -6,17 +6,17 @@ import * as t from '@babel/types';
 /**
  * 处理 className 字符串
  */
-export function prefixClassNames(classNames: string, prefix: string): string {
+export function addScopeToClassName(classNames: string, scope: string): string {
   return classNames
     .split(/\s+/)
-    .map((className) => (className ? `${prefix}${className}` : className))
+    .map((className) => (className ? `${scope}${className}` : className))
     .join(' ');
 }
 
 /**
  * 处理 JSX/TSX 中的 className 属性，保持原始代码格式不变
  */
-function processJS(content: string, prefix: string): string {
+function processJS(content: string, scope: string): string {
   const ast = babelParse(content, {
     sourceType: 'module',
     plugins: ['jsx', 'typescript'],
@@ -26,7 +26,7 @@ function processJS(content: string, prefix: string): string {
 
   // 处理字符串字面量中的类名
   const processStringLiteral = (node: t.StringLiteral) => {
-    node.value = prefixClassNames(node.value, prefix);
+    node.value = addScopeToClassName(node.value, scope);
   };
 
   // 处理条件表达式中的类名
@@ -70,8 +70,8 @@ function processJS(content: string, prefix: string): string {
           // 处理模板字符串中的静态部分
           expression.quasis.forEach((quasi) => {
             if (quasi.value.raw.trim()) {
-              quasi.value.raw = prefixClassNames(quasi.value.raw, prefix);
-              quasi.value.cooked = prefixClassNames(quasi.value.cooked || '', prefix);
+              quasi.value.raw = addScopeToClassName(quasi.value.raw, scope);
+              quasi.value.cooked = addScopeToClassName(quasi.value.cooked || '', scope);
             }
           });
 

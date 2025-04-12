@@ -79,7 +79,7 @@ BRH:18
 end_of_record
 TN:
 SF:src/processJS.ts
-FN:9,prefixClassNames
+FN:9,addScopeToClassName
 FN:12,(anonymous_1)
 FN:19,processJS
 FN:28,(anonymous_3)
@@ -89,7 +89,7 @@ FN:71,(anonymous_6)
 FN:79,(anonymous_7)
 FNF:8
 FNH:8
-FNDA:21,prefixClassNames
+FNDA:21,addScopeToClassName
 FNDA:32,(anonymous_1)
 FNDA:7,processJS
 FNDA:15,(anonymous_3)

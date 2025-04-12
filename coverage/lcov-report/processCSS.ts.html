@@ -273,16 +273,16 @@ import type { CssAst, CssRule } from './types';
 /**
  * 处理 CSS 规则
  * @param rules CSS 规则数组
- * @param prefix 类名前缀
+ * @param scope 作用域
  */
-function processRules(rules: CssRule[], prefix: string): void {
+function processRules(rules: CssRule[], scope: string): void {
   rules.forEach((rule: CssRule) =&gt; {
     switch (rule.type) {
       case 'rule':
         // 处理普通规则
         if (rule.selectors) {
           rule.selectors = rule.selectors.map((selector: string) =&gt; {
-            return selector.replace(/\.([\w-]+)/g, `.${prefix}$1`);
+            return selector.replace(/\.([\w-]+)/g, `.${scope}$1`);
           });
         }
         break;
@@ -294,27 +294,27 @@ function processRules(rules: CssRule[], prefix: string): void {
       case 'layer':
         // 处理所有可能包含嵌套规则的 at-rules
         if (rule.rules) {
-          processRules(rule.rules, prefix);
+          processRules(rule.rules, scope);
         }
         break;
 &nbsp;
       case 'keyframes':
         // 处理关键帧动画
         if (rule.keyframes) {
-          processRules(rule.keyframes, prefix);
+          processRules(rule.keyframes, scope);
         } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="else path not taken" >E</span>if (rule.rules) {</span>
           // 某些 CSS 解析器可能将关键帧放在 rules 中
-<span class="cstat-no" title="statement not covered" >          processRules(rule.rules, prefix);</span>
+<span class="cstat-no" title="statement not covered" >          processRules(rule.rules, scope);</span>
         }
         break;
 &nbsp;
       default:
         // 处理其他可能包含规则的节点
         <span class="missing-if-branch" title="if path not taken" >I</span>if (rule.rules &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >Array.isArray(rule.rules))</span> {
-<span class="cstat-no" title="statement not covered" >          processRules(rule.rules, prefix);</span>
+<span class="cstat-no" title="statement not covered" >          processRules(rule.rules, scope);</span>
         }
         <span class="missing-if-branch" title="if path not taken" >I</span>if (rule.keyframes &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >Array.isArray(rule.keyframes))</span> {
-<span class="cstat-no" title="statement not covered" >          processRules(rule.keyframes, prefix);</span>
+<span class="cstat-no" title="statement not covered" >          processRules(rule.keyframes, scope);</span>
         }
         break;
     }
@@ -324,10 +324,10 @@ function processRules(rules: CssRule[], prefix: string): void {
 /**
  * 处理 CSS 内容
  * @param content CSS 内容
- * @param prefix 类名前缀
+ * @param scope 作用域
  * @returns 处理后的 CSS 内容
  */
-function processCSS(content: string, prefix: string): string {
+function processCSS(content: string, scope: string): string {
   try {
     // 确保输入内容不为空
     if (!content.trim()) {
@@ -336,7 +336,7 @@ function processCSS(content: string, prefix: string): string {
 &nbsp;
     // 如果是简单的空规则，直接处理
     if (content.match(/^\.([\w-]+)\s*{\s*}\s*$/)) {
-      return content.replace(/\.([\w-]+)/g, `.${prefix}$1`);
+      return content.replace(/\.([\w-]+)/g, `.${scope}$1`);
     }
 &nbsp;
     const ast = cssParser(content, {
@@ -346,25 +346,25 @@ function processCSS(content: string, prefix: string): string {
     // 确保 AST 和规则数组存在
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!ast || !ast.stylesheet || !Array.isArray(ast.stylesheet.rules)) {
       // 如果 AST 解析失败，尝试直接处理选择器
-<span class="cstat-no" title="statement not covered" >      return content.replace(/\.([\w-]+)/g, `.${prefix}$1`);</span>
+<span class="cstat-no" title="statement not covered" >      return content.replace(/\.([\w-]+)/g, `.${scope}$1`);</span>
     }
 &nbsp;
     // 递归处理所有规则
-    processRules(ast.stylesheet.rules, prefix);
+    processRules(ast.stylesheet.rules, scope);
 &nbsp;
     // 将 AST 转换回 CSS 代码
     const result = cssStringify(ast);
 &nbsp;
     // 如果转换结果为空，尝试直接处理原始内容
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!result) {
-<span class="cstat-no" title="statement not covered" >      return content.replace(/\.([\w-]+)/g, `.${prefix}$1`);</span>
+<span class="cstat-no" title="statement not covered" >      return content.replace(/\.([\w-]+)/g, `.${scope}$1`);</span>
     }
 &nbsp;
     return result;
   } catch (error) {
     // 发生错误时，尝试直接处理原始内容
 <span class="cstat-no" title="statement not covered" >    console.error('处理 CSS 内容时出错:', error);</span>
-<span class="cstat-no" title="statement not covered" >    return content.replace(/\.([\w-]+)/g, `.${prefix}$1`);</span>
+<span class="cstat-no" title="statement not covered" >    return content.replace(/\.([\w-]+)/g, `.${scope}$1`);</span>
   }
 }
 &nbsp;
@@ -376,7 +376,7 @@ export default processCSS;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-09T14:29:05.287Z
+                at 2025-04-12T08:22:00.206Z
             </div>
         <script src="prettify.js"></script>
         <script>
